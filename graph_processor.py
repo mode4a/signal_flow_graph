@@ -1,3 +1,5 @@
+from duplicate_cycles_remove import remove_duplicate_cycles
+
 def dfs_forward_paths(cur_node, graph, visited, cur_path, paths, cur_weight):
     if visited[cur_node] == 1:
         return
@@ -33,6 +35,9 @@ def dfs_cycles(cur_node, graph, visited, cur_path, cycles, cur_weight):
         cur_path.pop()
         return
 
+    if len(cur_path) > 0 and cur_path[-1] > cur_node:
+        return
+
     visited[cur_node] = 1
     cur_path.append(cur_node)
 
@@ -50,14 +55,5 @@ def cycles(graph):
     cur_weight = []
     cycles = []
     dfs_cycles(0, graph, visited, cur_path, cycles, cur_weight)
-    return cycles
+    return remove_duplicate_cycles(cycles)
 
-
-graph = [
-    [(1, 1)],
-    [(2, 2), (3, 4)],
-    [(0, 3)],
-    [(1, 5)]
-]
-result = cycles(graph)
-print(result)
