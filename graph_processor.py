@@ -1,7 +1,7 @@
 from duplicate_cycles_remove import remove_duplicate_cycles
 
 def dfs_forward_paths(cur_node, graph, visited, cur_path, paths, cur_weight):
-    if visited[cur_node] == 1:
+    if visited[cur_node] == 1 or (len(cur_path) > 0 and cur_path[-1] > cur_node):
         return
 
     visited[cur_node] = 1
@@ -18,7 +18,6 @@ def dfs_forward_paths(cur_node, graph, visited, cur_path, paths, cur_weight):
     cur_path.pop()
     visited[cur_node] = 0
 
-
 def forward_paths(graph):
     visited = [0 for _ in range(len(graph))]
     cur_path = []
@@ -29,13 +28,12 @@ def forward_paths(graph):
 
 def dfs_cycles(cur_node, graph, visited, cur_path, cycles, cur_weight):
     if visited[cur_node] == 1:
+        if cur_path[-1] < cur_node:
+            return
         idx = cur_path.index(cur_node)
         cur_path.append(cur_node)
         cycles.append((cur_path[idx:].copy(), cur_weight[idx:].copy()))
         cur_path.pop()
-        return
-
-    if len(cur_path) > 0 and cur_path[-1] > cur_node:
         return
 
     visited[cur_node] = 1
